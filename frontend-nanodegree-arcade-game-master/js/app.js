@@ -1,54 +1,50 @@
 var Game = function() {
     this.gameOver = false;
     this.gameWin = false;
-}
+};
 
 // Enemies our player must avoid
-var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
+var Enemy = function(x,y) {
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
+    //sets image for enemy
     this.sprite = 'images/enemy-bug.png';
 
+    //set enemy positions
     this.x = x;
     this.y = y;
 
+    //speed multiplier
     this.multiplier = Math.floor((Math.random() * 5) + 1);
 };
-// Update the enemy's position, required method for game
+
 // Parameter: dt, a time delta between ticks
 Enemy.prototype.update = function(dt) {
 
     this.x = this.x + 101 * dt * this.multiplier;
 
     if (this.y == player.y && (this.x > player.x - 20 && this.x < player.x + 20)){
-        game.gameOver = true;
-       } else {
-        player.reset
+
+        player.reset();
     }
     if (this.x > 505) {
         this.reset();
     }
 
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
 };
 
 Enemy.prototype.reset = function() {
     this.x = -200;
     var yVals = [220, 140, 60];
-    this.y = yVals[Math.floor((Math.random() * 3))]
+    this.y = yVals[Math.floor((Math.random() * 3))];
     this.multiplier = Math.floor((Math.random() * 5) + 1);
-}
+};
 
 // Draw the enemy on the screen, required method for game
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+//////Player class/////
 var Player = function(x,y) {
 
     this.sprite = 'images/char-boy.png';
@@ -75,17 +71,14 @@ Player.prototype.handleInput = function(dir) {
         if(this.x < 0) {
             this.x = 0;
 
-        } else if (this.x > 606) {
-            this.x = 606
+        } else if (this.x > 404) {
+            this.reset();
 
         } else if (this.y > 404) {
             this.reset();
 
-        }
-        var win = true;
-
-        if (win) {
-            game.gameWin = true;
+        } else if (this.y < 0) {
+            this.y = 0;
         }
 
 };
@@ -144,5 +137,5 @@ var xVals = [0, 101, 202, 303, 404, 505, 606];
 
 var xyLocations = [];
 
-
+var winPositions = [[101, 35], [202, 35], [303, 35], [404, 35], [505,35]];
 var game = new Game();
